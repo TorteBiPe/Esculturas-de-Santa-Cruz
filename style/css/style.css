@@ -1,0 +1,207 @@
+@font-face {
+    font-family:'Roboto';
+    src: local('Roboto'),
+     local('Roboto Light'),
+     local('Roboto-Light'),
+     url(../../font/Roboto-Light.woff) format('woff');
+}
+/*----------------------------------------------------------------------------------------------------*/
+html{
+    margin: 0;
+}
+/*----------------------------------------------------------------------------------------------------*/
+body
+{
+    font-family: Roboto;
+    height: 100%;
+    margin: 0;
+    background-color: rgb(245,245,245);
+}
+/*----------------------------------------------------------------------------------------------------*/
+header,footer{
+    background-color: rgb(57,60,122);
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+    color: white;
+}
+/*----------------------------------------------------------------------------------------------------*/
+footer
+{
+margin-top: -15px;
+}
+/*----------------------------------------------------------------------------------------------------*/
+#imgcesar
+{
+    width: 20%;
+}
+/*----------------------------------------------------------------------------------------------------*/
+#search{
+    background-color: white;    
+}
+/*----------------------------------------------------------------------------------------------------*/
+main
+{
+    min-height:100% ;
+    color:rgb(40,43,111);
+}
+/*----------------------------------------------------------------------------------------------------*/
+#texts,#buttons{
+    display: flex;
+    flex-direction: column;
+    margin: 20px;
+}
+/*----------------------------------------------------------------------------------------------------*/
+#buttons button{
+    margin-top: 8px;
+    
+    border-radius: 5px;
+
+    box-shadow: 0px 0px 1px 0.3px rgb(0,0,0);
+
+    border-color:rgb(57,60,122);
+
+    padding: 15px;
+
+    font-size: 17px;
+    
+}
+/*----------------------------------------------------------------------------------------------------*/
+#buttonrestart{
+    margin-bottom:20px ;
+    color:rgb(57,60,122);
+}
+/*----------------------------------------------------------------------------------------------------*/
+#texts input{
+    border-radius: 5px;
+    
+    padding: 15px;
+    border-color:rgb(57,60,122);
+}
+/*----------------------------------------------------------------------------------------------------*/
+#buttonsearch{
+
+    color:white;
+    background-color:rgb(40,43,111) ;
+}
+/*----------------------------------------------------------------------------------------------------*/
+#material:invalid, #location:invalid{
+    border: 2px solid red;
+}
+
+/*----------------------Insertmonu------------------------------------*/
+
+.material-name{
+    border-bottom: 2px solid rgb(40,43,111);
+
+}
+/*----------------------------------------------------------------------------------------------------*/
+.pname,.pautor,.pproautor{
+    border-bottom: 2px solid rgb(40,43,111);
+}
+/*----------------------------------------------------------------------------------------------------*/
+.material
+{
+    font-size: 25px;
+    margin: 5px;
+    padding: 5px;
+}
+/*----------------------------------------------------------------------------------------------------*/
+.location
+{
+    margin-top: 20px;
+    font-size: 20px;
+}
+/*----------------------------------------------------------------------------------------------------*/
+.card
+{
+    background-color: white;
+    margin: 20px;
+    margin-left:2%;
+    margin-top: 23px;
+    padding: 10px;
+    box-shadow: 0px 0px 3px 1px rgb(0,0,0);
+    border-radius: 8px;
+    font-size: 15px;
+}
+/*----------------------------------------------------------------------------------------------------*/
+@media(min-width: 600px) and (max-width: 1000px){
+    .cards
+    {
+        display: flex;
+        flex-wrap: wrap;
+    }
+    .card
+    {
+        min-width: 300px;
+        max-width: 380px;
+        margin:10px;
+        flex: 1 1 40%;
+    }
+    #buttons button
+    {
+        flex-basis: 100%;
+    }
+    #buttons
+    {
+        flex-direction: row;
+        gap:10px;
+    }
+    #buttonsearch{
+        height: 20%;
+    }
+} 
+/*----------------------------------------------------------------------------------------------------*/
+@media(min-width: 1000px){
+
+    main{
+        display: grid;
+        grid-template-areas:"head head"
+                            "menu main"
+                            "foot foot";
+                            grid-template-columns: 20em 1fr;
+                                                
+    }
+     header{
+        grid-area: head;
+    }
+
+    form{
+        grid-area: menu;
+        
+    }
+
+    #insertmonu{
+        grid-area: main;
+    }
+
+    footer{
+        grid-area: foot;
+    } 
+
+    header,footer{
+        height: 100px;
+    }
+    #buttons{
+        flex-direction: column;
+    }
+    #insertmonu{
+        width: 100%;
+    }
+
+    .cards
+    {
+        display: flex;
+        flex-direction: row;
+    }
+    .card{
+        width: 400px;
+    }
+    /* esto lo puse porque no sabia como hacerlo sin estos elementos */
+    #search{
+        padding-bottom: 40em;
+        max-width: 20em;
+    }
+}  

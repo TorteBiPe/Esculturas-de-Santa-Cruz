@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: main.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: main.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import {monumentos} from "../json/monumentos.js";
+
+console.log(monumentos)
+console.log(buildTree(monumentos));
+
+
+document.getElementById("search").addEventListener('submit', function (event){
+    event.preventDefault();
+    filterMonuments();
+});
+
+document.getElementById("buttonrestart").addEventListener('click', restartPage);
+
+document.addEventListener('DOMContentLoaded', showAll);
+
+/**
+ * Construye un array de monumentos estructurado.
+ * Devolvera un array de materiales que contienen 
+ * localizaciones y estos a su vez contienen monumentos.
+ * @param {Array} monumentos 
+ * @returns {Array}
+ */
+function buildTree(monumentos)
+{
+    let materials = [];
+    monumentos.forEach(monumento =>{
+
+        let material = materials.find(mat=>mat.name==monumento.MATERIAL);
+
+        if(!material)
+        {
+            material={
+                name:monumento.MATERIAL,
+                locations:[]
+            }
+            materials.push(material);
+        }
+
+        let location = material.locations.find(loc=>loc.name==monumento.UBICACION);
+
+        if(!location)
+        {
+            location={
+                name:monumento.UBICACION,
+                monuments:[]
+            }
+            material.locations.push(location);
+        }
+        
+        location.monuments.push(monumento)
+    })
+    return materials;
+}
+
+
+/**
+ * Crea la estructura DOM de la lista
+ * @param {Array} materials 
+ */
+function createList(materials)
+{
+
+    let container = document.getElementById("insertmonu");
+
+    materials.forEach(material =>{
+        let materialcard = document.createElement("div");
+        let materialname = document.createElement("div");
+        let materiallocations = document.createElement("div");
+
+        materialname.textContent=material.name;
+        materialcard.classList.add("material");
+        materialname.classList.add("material-name")
+        materialcard.appendChild(materialname);
+        materialcard.appendChild(materiallocations);
+
+        container.appendChild(materialcard);
+
+        material.locations.forEach(location =>{
+            let locationcard = document.createElement("div");
+            let locationname = document.createElement("div");
+            let locationmonuments = document.createElement("div");
+
+            locationname.textContent=location.name;
+            locationcard.classList.add("location");
+            locationname.classList.add("location-name");
+            locationcard.appendChild(locationname);
+            locationcard.appendChild(locationmonuments);
+
+            materiallocations.appendChild(locationcard);
+
+            location.monuments.forEach(monument=>{
+                let monumentcard= createMonument(monument);
+                locationmonuments.appendChild(monumentcard)
+            })
+        })
+    })
+
+}
+
+/**
+ * Crea la tarjeta de un monumento
+ * @param {Object} monumento 
+ * @returns {HTMLElement}
+ */
+function createMonument(monumento)
+{
+    let monumentoCard = document.createElement("div");
+
+    // Creamos nodo del nombre 
+
+    let nombre = document.createElement("div");
+    var distrito = document.createTextNode(monumento.NOMBRE);
+    if(monumento.NOMBRE != "SIN TITULO" &amp;&amp; monumento.NOMBRE !="SIN T\u00cdTULO")
+    {
+        nombre.appendChild(distrito);
+        monumentoCard.appendChild(nombre);
+    }
+
+    // Creamos nodo del autor
+
+    let autor = document.createElement("div");
+    distrito = document.createTextNode(monumento.AUTOR);
+    autor.appendChild(distrito);
+    monumentoCard.appendChild(autor);
+
+    // Creamos nodo del procautor
+
+    let procautor = document.createElement("div");
+    distrito = document.createTextNode(monumento.PROCAUTOR);
+    if(monumento.PROCAUTOR != null)
+    {
+        procautor.appendChild(distrito);
+        monumentoCard.appendChild(procautor);
+    }
+
+    monumentoCard.classList.add("card");
+    return monumentoCard;
+}
+/**
+ * Reinicia la busqueda
+ */
+function restartPage()
+{
+    document.getElementById("material").value = "";
+    document.getElementById("location").value = "";
+    showAll();
+
+}
+
+//---------------------------FILTROS-------------------------------
+/**
+ * Muestra todos los resultados
+ */
+function showAll()
+{
+    let tree = buildTree(monumentos)
+    clearList()
+    createList(tree);
+}
+
+/**
+ * Filtra y muestra los monumentos en la pagina
+ */
+function filterMonuments()
+{
+    let material = document.getElementById("material").value.toLowerCase();
+    let location = document.getElementById("location").value.toLowerCase();
+
+   /* if(!material &amp;&amp; !location)
+    {
+        alert("debes escribir algo")
+        return
+    }
+    
+
+    let filtered = monumentos.filter(monument=>{
+        if(material &amp;&amp; monument.MATERIAL.toLowerCase().includes(material))
+        {
+            return true;
+        }
+        if(location &amp;&amp; monument.UBICACION.toLowerCase().includes(location))
+        {
+            return true;
+        }
+
+        return false;
+    })
+    */
+    let filtered = monumentos.filter(monument=>{
+        if(material || location)
+        {
+            if(material &amp;&amp; monument.MATERIAL.toLowerCase().includes(material))
+            {
+                return true;
+            }
+            if(location &amp;&amp; monument.UBICACION.toLowerCase().includes(location))
+            {
+                return true;
+            }
+
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+        
+    })
+    let tree = buildTree(filtered);
+    clearList();
+    createList(tree);
+}
+
+/**
+ * Elimina todos los resultados en la lista
+ */
+function clearList()
+{
+    let container = document.getElementById("insertmonu");
+    while(container.hasChildNodes())
+    {
+        container.removeChild(container.firstChild);
+    }
+}</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#buildTree">buildTree</a></li><li><a href="global.html#clearList">clearList</a></li><li><a href="global.html#createList">createList</a></li><li><a href="global.html#createMonument">createMonument</a></li><li><a href="global.html#filterMonuments">filterMonuments</a></li><li><a href="global.html#restartPage">restartPage</a></li><li><a href="global.html#showAll">showAll</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 3.6.6</a> on Wed Nov 18 2020 19:17:23 GMT+0000 (hora estándar de Europa occidental)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>
